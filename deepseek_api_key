@@ -7,11 +7,11 @@ DEEPSEEK_URL=os.getenv("","")
 
 client = OpenAI(api_key=DEEPSEEK_KEY,base_url=DEEPSEEK_URL)
 
-def initialize_app()
+def initialize_app():
   st.set_page_config(page_title="DeepSeek AI Chat",layout="wide",initial_sidebar_state="expanded")
   if "messages" not in st.session_state:
-    st.session_state=[]
-    st.session_state.append({"role":"system","content":"content"})
+    st.session_state.messages=[]
+    st.session_state.messages.append({"role":"system","content":"content"})
 
 def clear_history_chat():
   system_messages=None
@@ -46,15 +46,15 @@ def setup_ui():
     st.rerun()
 
   for message in st.session_state.messages:
-    message["role"]!="system"
-      with st.chat_message(messages["role"])
+    if message["role"]!="system":
+      with st.chat_message(message["role"]):
         st.markdown(message["content"])
 
   return st.chat_input("please input your question...")
 
 if __name__=="__main__":
   initialize_app()
-  user_query=setup()
+  user_query=setup_ui()
     if user_query:
       handle_dialogue(user_query)
       st.rerun()
