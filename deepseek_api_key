@@ -25,13 +25,13 @@ def clear_history_chat():
 def handle_dialogue(user_input):
   if user_input:
     st.session_state.messages.append({"role":"user","content":user_input})
-  api_messages=[]
-  for msg in st.session_state.messages:
-    api_messages.append({"role":msg["role"],"content":msg["content"])
   try:
     with st.spinner("AI thiking..."):
-    response=client.chat.completion.create(model="deepseek-chat",messages=api_messages,max_tokens=1000,temperature=0.7)
-    ai_messages=response.chat.choices[0].message.content
+    api_messages=[]
+      for msg in st.session_state.messages:
+        api_messages.append({"role":msg["role"],"content":msg["content"]})
+    response=client.chat.completions.create(model="deepseek-chat",messages=api_messages,max_tokens=1000,temperature=0.7)
+    ai_messages=response.choices[0].message.content
     st.session_state.messages.append({"role":"assistant","content":ai_messages})
   except Exception as e:
     st.error(f"Error:{e}")
@@ -41,20 +41,19 @@ def setup_ui():
   st.title("deepseek ai chat")
   st.caption("powered by deepseek")
 
-  initialize_app()
-
   if st.sidebar.button("clear history chat"):
     clear_history_chat()
     st.rerun()
 
-  for messages in st.session_state.messages:
-    messages["role"]!="system"
-      with st.chat_messages(messages["role"])
-        st.markdown(messages["content"])
+  for message in st.session_state.messages:
+    message["role"]!="system"
+      with st.chat_message(messages["role"])
+        st.markdown(message["content"])
 
   return st.chat_input("please input your question...")
 
 if __name__=="__main__":
+  initialize_app()
   user_query=setup()
     if user_query:
       handle_dialogue(user_query)
