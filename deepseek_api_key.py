@@ -3,7 +3,7 @@ import os
 from openai import OpenAI
 from dotenv import load_dotenv
 
-load_dotenv
+load_dotenv()
 
 DEEPSEEK_KEY=os.getenv("DEEPSEEK_KEY")
 DEEPSEEK_URL=os.getenv("DEEPSEEK_URL")
@@ -31,8 +31,8 @@ def handle_dialogue(user_input):
   try:
     with st.spinner("AI thinking..."):
       api_messages=[]
-        for msg in st.session_state.messages:
-          api_messages.append({"role":msg["role"],"content":msg["content"]})
+      for msg in st.session_state.messages:
+        api_messages.append({"role":msg["role"],"content":msg["content"]})
     response=client.chat.completions.create(model="deepseek-chat",messages=api_messages,max_tokens=1000,temperature=0.7)
     ai_messages=response.choices[0].message.content
     st.session_state.messages.append({"role":"assistant","content":ai_messages})
@@ -58,8 +58,9 @@ def setup_ui():
 if __name__=="__main__":
   initialize_app()
   user_query=setup_ui()
-    if user_query:
-      handle_dialogue(user_query)
-      st.rerun()
+  
+  if user_query:
+    handle_dialogue(user_query)
+    st.rerun()
 
   
