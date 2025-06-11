@@ -26,10 +26,10 @@ def handle_dialogue(user_input):
   if user_input:
     st.session_state.messages.append({"role":"user","content":user_input})
   try:
-    with st.spinner("AI thiking..."):
-    api_messages=[]
-      for msg in st.session_state.messages:
-        api_messages.append({"role":msg["role"],"content":msg["content"]})
+    with st.spinner("AI thinking..."):
+      api_messages=[]
+        for msg in st.session_state.messages:
+          api_messages.append({"role":msg["role"],"content":msg["content"]})
     response=client.chat.completions.create(model="deepseek-chat",messages=api_messages,max_tokens=1000,temperature=0.7)
     ai_messages=response.choices[0].message.content
     st.session_state.messages.append({"role":"assistant","content":ai_messages})
