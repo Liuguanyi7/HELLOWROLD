@@ -1,9 +1,12 @@
 import streamlit as st
 import os 
 from openai import OpenAI
+from dotenv import load_dotenv
 
-DEEPSEEK_KEY=os.getenv("","")
-DEEPSEEK_URL=os.getenv("","")
+load_dotenv
+
+DEEPSEEK_KEY=os.getenv("DEEPSEEK_KEY")
+DEEPSEEK_URL=os.getenv("DEEPSEEK_URL")
 
 client = OpenAI(api_key=DEEPSEEK_KEY,base_url=DEEPSEEK_URL)
 
